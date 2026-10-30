@@ -3,11 +3,11 @@ Module: snappy.documentation.readme
 Purpose: Public introduction, installation and release instructions.
 Created: 2026-10-20. Public application overview and installation instructions.
 -->
-# What is Snappy
+# Snappy
 
 <img src="assets/snappy.png" alt="Snappy icon" width="128">
 
-A compact screenshot and desktop recorder for Linux, built with Rust and GTK 3. It was designed to make screen recording easier and more convenient.
+A compact screenshot and desktop recorder for Linux, built with Rust and GTK 3.
 
 Press **Print Screen**, select the screen or an area, and capture.
 
@@ -26,9 +26,9 @@ Download **one** package for your distribution from [GitHub Releases](https://gi
 
 | Distribution | Package |
 | --- | --- |
-| Ubuntu 24.04+ | `snappy-capture_0.1.0-11ubuntu1_amd64.deb` |
-| Linux Mint 22+ | `snappy-capture_0.1.0-11mint1_amd64.deb` |
-| Debian 13+ | `snappy-capture_0.1.0-11debian1_amd64.deb` |
+| Ubuntu 24.04+ | `snappy-capture_<version>ubuntu1_amd64.deb` |
+| Linux Mint 22+ | `snappy-capture_<version>mint1_amd64.deb` |
+| Debian 13+ | `snappy-capture_<version>debian1_amd64.deb` |
 
 These packages are for **64-bit Intel/AMD (amd64)** systems. They contain the same
 application, with distribution-specific package descriptions and preferred portal
@@ -37,7 +37,7 @@ backends. They are alternative installations of the same package, not separate a
 Open a terminal in the download directory and install the matching file, for example:
 
 ```sh
-sudo apt install ./snappy-capture_0.1.0-11ubuntu1_amd64.deb
+sudo apt install ./snappy-capture_*ubuntu1_amd64.deb
 ```
 
 Open **Snappy** from the application menu once to complete desktop integration.
@@ -79,25 +79,39 @@ they are not a signing certificate.
 
 ## Build from source
 
-Requires Rust **1.88 or newer**, with Rust 2024 support, and the native build
+Requires Rust **1.88 or newer** (install with [rustup](https://rustup.rs)) and the native build
 dependencies:
 
 ```sh
+git clone https://github.com/NullMagic2/Snappy.git
+cd Snappy
 sudo apt install build-essential pkg-config libgtk-3-dev libx11-dev
 ./build.sh
 ```
 
-The executable is written to `Binaries/snappy`. Runtime dependencies are declared
-in [package.sh](package.sh).
+The executable is written to `Binaries/snappy`. The `.deb` installs runtime dependencies
+automatically; for a source build install them yourself, mainly `ffmpeg`,
+`gstreamer1.0-tools`, `gstreamer1.0-pipewire`, `gstreamer1.0-plugins-good`,
+`gstreamer1.0-libav`, `xdg-desktop-portal` and `yaru-theme-gtk`.
+The full list is in [package.sh](package.sh).
 
 ```sh
-./package.sh all            # Produce Ubuntu, Mint and Debian packages
+./package.sh all           # Produce Ubuntu, Mint and Debian packages
+./package.sh ubuntu        # Or just one: ubuntu | mint | debian
 ./clean.sh                 # Remove owned build intermediates; keep published binaries
 ```
 
 Packaging also needs `dpkg-deb`, FFmpeg, and Binutils. To install a source build
-under your own account without changing Print Screen:
+under your own account (run as your regular user, **without sudo**) and keep your
+current Print Screen shortcut:
 
 ```sh
 ./install.sh --no-default
+```
+
+The binary is installed to `~/.local/bin/snappy`.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Third-party dependency notices: [THIRD_PARTY_LICENSES.txt](THIRD_PARTY_LICENSES.txt).
 ```
